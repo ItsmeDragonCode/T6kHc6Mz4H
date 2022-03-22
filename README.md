@@ -17,8 +17,8 @@ cd t6khc6mz4h
 ```
 
 ## Built With
-* [PHP] [JSON]
-* [SQL]
+* [Laravel] [VueJS]
+* [APIs]
 
 ## Authors
 * **Soulaimane Yahya** (https://github.com/soulaimaneyahya)
