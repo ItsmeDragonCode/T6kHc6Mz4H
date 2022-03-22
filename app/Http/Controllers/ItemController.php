@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use Carbon\Carbon;
+use App\Http\Resources\itemResource;
 
 class ItemController extends Controller
 {
@@ -21,11 +22,14 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
-        $item = new Item;
-        $item->name = request('name');
+        $item = new Item();
+        $item->name = $request->name;
         $item->save();
 
-        return $item;
+        if($item->save()){
+            return $item;
+        }
+        return "Cannot store";
     }
 
     public function show($id)
@@ -42,10 +46,18 @@ class ItemController extends Controller
     {
         $item = Item::find($id);
         if($item){
-            $item->completed = request('completed') ? true : false;
-            $item->completed_at = request('completed') ? Carbon::now() : null;
-            $item->save();
-            return $item;
+            if($item->completed){
+                $item->completed = false;
+                $item->completed_at = null;
+            }else{
+                $item->completed = true;
+                $item->completed_at = Carbon::now();
+            }
+
+            if($item->save()){
+                return $item;
+            }
+            return "Cannot update";
         }
         return "Item not found";
     }
